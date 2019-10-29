@@ -40,6 +40,21 @@ const addMessage = (message, author) => store.dispatch({
 })
 
 
+// exemplo generator
+function *calculator(input) {
+  var doubleThat = 3 * (yield (input / 1))
+  var another = yield (doubleThat)
+  return (input * doubleThat * another)
+}
+
+const calc = calculator(10)
+console.log(calc.next())
+console.log(calc.next())
+console.log(calc.next())
+// fim exemplo generator
+
+
+
 function render() {
   
   console.log(store.getState())
@@ -59,3 +74,4 @@ function render() {
 
 render()
 store.subscribe(render)
+
