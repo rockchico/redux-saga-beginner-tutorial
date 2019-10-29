@@ -1,4 +1,4 @@
-import { put, takeEvery, takeLatest, all, call } from 'redux-saga/effects'
+import { put, takeEvery, takeLatest, take, all, call } from 'redux-saga/effects'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
 
@@ -54,9 +54,11 @@ export function* fetchAsyncMessages() {
 
 
 
-    const URL_TO_FETCH = 'https://jsonplaceholder.typicode.com/posts';
+    //const URL_TO_FETCH = 'https://jsonplaceholder.typicode.com/posts';
+    const URL_TO_FETCH = 'http://localhost:9966/MOCK_DATA.json';
 
     try {
+        yield delay(10000)
         const response = yield call(fetch, URL_TO_FETCH);
         const responseBody = yield response.json();
         //console.log(responseBody); 
@@ -74,7 +76,14 @@ export function* fetchAsyncMessages() {
 
 export function* watchFetchAsyncMessages(params) {
     
+    // executa cada vez que a action for executada
     yield takeEvery('ADD_MESSAGE', fetchAsyncMessages);
+
+    // executa somente na primeira vez que a action é executada
+    //yield take('ADD_MESSAGE', fetchAsyncMessages);
+
+    // se uma ação ADD_MESSAGE for executada quando outra estiver sendo executada, pega somente o valor da segunda ação e cancela a primeira
+    //yield takeLatest('ADD_MESSAGE', fetchAsyncMessages)
 
     
     //yield put({ type: 'BULK_MESSAGE' });

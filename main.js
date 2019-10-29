@@ -62,6 +62,7 @@ function render() {
   ReactDOM.render(
     <Counter
       value={store.getState().counterState}
+      messages={store.getState().messageState}
       onIncrement={() => action('INCREMENT')}
       onDecrement={() => action('DECREMENT')}
       fetchPostsAsync={() => action('FETCH_POSTS_ASYNC')}

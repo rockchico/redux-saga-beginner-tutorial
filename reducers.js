@@ -15,9 +15,10 @@ export const messageReducer = (state = [], action) => {
   switch (action.type) {
     case 'ADD_MESSAGE':
       return state.concat([{
+        id: 10001,
         message: action.message,
         author: action.author
-      }])
+    }])
 
     case 'BULK_MESSAGE':
         console.log('passou no bulk')

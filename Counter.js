@@ -1,7 +1,15 @@
 /*eslint-disable no-unused-vars */
 import React, { Component, PropTypes } from 'react'
 
-const Counter = ({ value, onIncrement, onDecrement, onIncrementAsync, fetchPostsAsync, onAddMessage }) =>
+const List = ({ list }) => (
+  <ul>
+    {list.map((item) => (
+      <li key={item.id}>{item.author} : {item.message}</li>
+    ))}
+  </ul>
+);
+
+const Counter = ({ value, messages, onIncrement, onDecrement, onIncrementAsync, fetchPostsAsync, onAddMessage }) =>
       <div>
         <button onClick={onAddMessage}>
           Add message
@@ -28,9 +36,13 @@ const Counter = ({ value, onIncrement, onDecrement, onIncrementAsync, fetchPosts
         <div>
           Clicked: {value} times
         </div>
+        <div>
+          <List list={messages} />
+        </div>
       </div>
 
 Counter.propTypes = {
+  messages: PropTypes.array.isRequired,
   value: PropTypes.number.isRequired,
   onIncrement: PropTypes.func.isRequired,
   onDecrement: PropTypes.func.isRequired,
