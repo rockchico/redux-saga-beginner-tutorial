@@ -1,4 +1,4 @@
-import { put, takeEvery, takeLatest, all } from 'redux-saga/effects'
+import { put, takeEvery, takeLatest, all, call } from 'redux-saga/effects'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
 
@@ -46,10 +46,45 @@ export function* watchFetchAsync() {
     
 }
 
+
+export function* fetchAsyncMessages() {
+    
+
+    
+
+
+
+    const URL_TO_FETCH = 'https://jsonplaceholder.typicode.com/posts';
+
+    try {
+        const response = yield call(fetch, URL_TO_FETCH);
+        const responseBody = yield response.json();
+        //console.log(responseBody); 
+        yield put({ type: 'BULK_MESSAGE', messages: responseBody });
+     } catch (error) {
+        yield put({type: "FETCH_FAILED", error})
+     }
+
+    
+
+    
+}
+
+
+
+export function* watchFetchAsyncMessages(params) {
+    
+    yield takeEvery('ADD_MESSAGE', fetchAsyncMessages);
+
+    
+    //yield put({ type: 'BULK_MESSAGE' });
+  }
+
 export default function* rootSaga() {
     yield all([
       helloSaga(),
       watchIncrementAsync(),
-      watchFetchAsync()
+      watchFetchAsync(),
+      watchFetchAsyncMessages()
     ])
 }
