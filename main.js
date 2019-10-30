@@ -39,18 +39,26 @@ const addMessage = (message, author) => store.dispatch({
   author
 })
 
+const delMessage = (id) => store.dispatch({
+  type: 'DEL_MESSAGE_ACTION',
+  id
+})
+
 
 // exemplo generator
-function *calculator(input) {
-  var doubleThat = 3 * (yield (input / 1))
-  var another = yield (doubleThat)
-  return (input * doubleThat * another)
+function *generatorFunction(i) {
+  //console.log(i);
+  const j = 5 * (yield (i * 10));
+  //console.log(j);
+  const k = yield (2 * j / 4);
+  //console.log(k)
+  return (i + j + k)
 }
 
-const calc = calculator(10)
-console.log(calc.next())
-console.log(calc.next())
-console.log(calc.next())
+var generator = generatorFunction(10)
+//console.log( generator.next(20) )
+//console.log( generator.next(10) )
+//console.log( generator.next(5) )
 // fim exemplo generator
 
 
@@ -66,7 +74,8 @@ function render() {
       onIncrement={() => action('INCREMENT')}
       onDecrement={() => action('DECREMENT')}
       fetchPostsAsync={() => action('FETCH_POSTS_ASYNC')}
-      onIncrementAsync={() => action('INCREMENT_ASYNC')} 
+      onIncrementAsync={() => action('INCREMENT_ASYNC')}
+      onDelMessage={() => delMessage(10)} 
       onAddMessage={() => addMessage("mensagem bla bla", "Pedro da Silva")} 
       onAddBulkMessage={() => action("BULK_MESSAGE_ACTION")} 
       />,

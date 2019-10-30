@@ -20,33 +20,20 @@ export const messageReducer = (state = [], action) => {
         author: action.author
       }])
 
+      case 'DEL_MESSAGE':
+        
+        console.log(action)
+        return state.filter((item, index) => item.id !== action.id)
+
     case 'BULK_MESSAGE':
         console.log('passou no bulk')
         //console.log(action.messages)
 
         let newState = state.concat(action.messages)
 
-        console.log(newState)
+        //console.log(newState)
 
         return newState
-
-        //return state.concat([{
-        //  id: action.message.id,
-        //  message: action.message.message,
-        //  author: action.message.author
-        //}])
-
-        
-        
-        //action.messages.map((item) => (
-        //  state.concat([{ 
-        //    message: item.body,
-        //    author: item.title
-        //  }])
-        //))
-
-        //return state = action.messages;
-
 
     default:
     return state

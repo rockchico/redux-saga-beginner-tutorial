@@ -4,15 +4,19 @@ import React, { Component, PropTypes } from 'react'
 const List = ({ list }) => (
   <ul>
     {list.map((item) => (
-      <li key={item.id}>{item.author} : {item.message}</li>
+      <li key={item.id}>id: {item.id} - {item.author} - {item.message}</li>
     ))}
   </ul>
 );
 
-const Counter = ({ value, messages, onIncrement, onDecrement, onIncrementAsync, fetchPostsAsync, onAddMessage, onAddBulkMessage }) =>
+const Counter = ({ value, messages, onIncrement, onDecrement, onIncrementAsync, fetchPostsAsync, onAddMessage, onDelMessage, onAddBulkMessage }) =>
       <div>
         <button onClick={onAddMessage}>
           Add message
+        </button>
+        {' '}
+        <button onClick={onDelMessage}>
+          Del message
         </button>
         {' '}
         <button onClick={onAddBulkMessage}>
@@ -53,6 +57,7 @@ Counter.propTypes = {
   onIncrementAsync: PropTypes.func.isRequired,
   fetchPostsAsync: PropTypes.func.isRequired,
   onAddMessage: PropTypes.func.isRequired,
+  onDelMessage: PropTypes.func.isRequired,
   onAddBulkMessage: PropTypes.func.isRequired
 }
 

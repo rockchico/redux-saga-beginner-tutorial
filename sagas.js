@@ -50,7 +50,7 @@ export function* watchFetchAsync() {
 export function* fetchAsyncMessages() {
     
     //const URL_TO_FETCH = 'https://jsonplaceholder.typicode.com/posts';
-    const URL_TO_FETCH = 'http://localhost:9966/MOCK_DATA.json';
+    const URL_TO_FETCH = 'http://localhost:3000/messages';
 
     try {
         yield delay(1000)
@@ -70,6 +70,21 @@ export function* addMessage() {
     try {
         yield delay(1000)
         yield put({ type: 'ADD_MESSAGE', message: "faifoadsfi oasdifoasi", author: "Jose" })
+        
+     } catch (error) {
+        yield put({type: "FETCH_FAILED", error})
+     }
+}
+
+export function* delMessage(params) {
+
+    console.log(params)
+
+    try {
+        const response = yield call(fetch, 'http://localhost:3000/messages');
+        const responseBody = yield response.json();
+
+        yield put({ type: 'DEL_MESSAGE', id: params.id })
         
      } catch (error) {
         yield put({type: "FETCH_FAILED", error})
@@ -100,12 +115,23 @@ export function* watchAddMessage(params) {
 
 }
 
+export function* watchDelMessage(params) {
+    
+
+    // executa cada vez que a action for executada
+    yield takeEvery('DEL_MESSAGE_ACTION', delMessage);
+
+}
+
+// https://gist.github.com/rowlandekemezie/f559ec88da8ff348913820d2da3e8ed7
+
 export default function* rootSaga() {
     yield all([
       helloSaga(),
       watchIncrementAsync(),
       watchFetchAsync(),
       watchFetchAsyncMessages(),
-      watchAddMessage()
+      watchAddMessage(),
+      watchDelMessage()
     ])
 }
