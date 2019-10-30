@@ -9,10 +9,14 @@ const List = ({ list }) => (
   </ul>
 );
 
-const Counter = ({ value, messages, onIncrement, onDecrement, onIncrementAsync, fetchPostsAsync, onAddMessage }) =>
+const Counter = ({ value, messages, onIncrement, onDecrement, onIncrementAsync, fetchPostsAsync, onAddMessage, onAddBulkMessage }) =>
       <div>
         <button onClick={onAddMessage}>
           Add message
+        </button>
+        {' '}
+        <button onClick={onAddBulkMessage}>
+          Add Bulk message
         </button>
         {' '}
         
@@ -48,7 +52,8 @@ Counter.propTypes = {
   onDecrement: PropTypes.func.isRequired,
   onIncrementAsync: PropTypes.func.isRequired,
   fetchPostsAsync: PropTypes.func.isRequired,
-  onAddMessage: PropTypes.func.isRequired
+  onAddMessage: PropTypes.func.isRequired,
+  onAddBulkMessage: PropTypes.func.isRequired
 }
 
 export default Counter

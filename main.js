@@ -34,7 +34,7 @@ sagaMiddleware.run(rootSaga);
 const action = type => store.dispatch({type})
 
 const addMessage = (message, author) => store.dispatch({
-  type: 'ADD_MESSAGE',
+  type: 'ADD_MESSAGE_ACTION',
   message,
   author
 })
@@ -68,6 +68,7 @@ function render() {
       fetchPostsAsync={() => action('FETCH_POSTS_ASYNC')}
       onIncrementAsync={() => action('INCREMENT_ASYNC')} 
       onAddMessage={() => addMessage("mensagem bla bla", "Pedro da Silva")} 
+      onAddBulkMessage={() => action("BULK_MESSAGE_ACTION")} 
       />,
     document.getElementById('root')
   )

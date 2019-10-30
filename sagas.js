@@ -49,27 +49,31 @@ export function* watchFetchAsync() {
 
 export function* fetchAsyncMessages() {
     
-
-    
-
-
-
     //const URL_TO_FETCH = 'https://jsonplaceholder.typicode.com/posts';
     const URL_TO_FETCH = 'http://localhost:9966/MOCK_DATA.json';
 
     try {
-        yield delay(10000)
+        yield delay(1000)
         const response = yield call(fetch, URL_TO_FETCH);
         const responseBody = yield response.json();
-        //console.log(responseBody); 
-        yield put({ type: 'BULK_MESSAGE', messages: responseBody });
+
+        yield put({ type: 'BULK_MESSAGE', messages: responseBody })
+        
      } catch (error) {
         yield put({type: "FETCH_FAILED", error})
      }
+}
 
-    
+export function* addMessage() {
 
-    
+
+    try {
+        yield delay(1000)
+        yield put({ type: 'ADD_MESSAGE', message: "faifoadsfi oasdifoasi", author: "Jose" })
+        
+     } catch (error) {
+        yield put({type: "FETCH_FAILED", error})
+     }
 }
 
 
@@ -77,7 +81,7 @@ export function* fetchAsyncMessages() {
 export function* watchFetchAsyncMessages(params) {
     
     // executa cada vez que a action for executada
-    yield takeEvery('ADD_MESSAGE', fetchAsyncMessages);
+    yield takeEvery('BULK_MESSAGE_ACTION', fetchAsyncMessages);
 
     // executa somente na primeira vez que a action é executada
     //yield take('ADD_MESSAGE', fetchAsyncMessages);
@@ -87,13 +91,21 @@ export function* watchFetchAsyncMessages(params) {
 
     
     //yield put({ type: 'BULK_MESSAGE' });
-  }
+}
+
+export function* watchAddMessage(params) {
+    
+    // executa cada vez que a action for executada
+    yield takeEvery('ADD_MESSAGE_ACTION', addMessage);
+
+}
 
 export default function* rootSaga() {
     yield all([
       helloSaga(),
       watchIncrementAsync(),
       watchFetchAsync(),
-      watchFetchAsyncMessages()
+      watchFetchAsyncMessages(),
+      watchAddMessage()
     ])
 }
