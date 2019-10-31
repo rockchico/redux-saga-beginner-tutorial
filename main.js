@@ -2,34 +2,8 @@ import "babel-polyfill"
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { createStore, applyMiddleware } from 'redux'
-import { combineReducers } from 'redux';
-
-import createSagaMiddleware from 'redux-saga'
-
-import rootSaga from './sagas'
+import store from './store'
 import Counter from './Counter'
-
-import { counterReducer } from './reducers'
-import { messageReducer } from './reducers'
-
-
-
-
-export const Reducers = combineReducers({
-  counterState: counterReducer,
-  messageState: messageReducer,
-  //otherState: otherReducer,
-});
-
-const sagaMiddleware = createSagaMiddleware()
-const store = createStore(
-  Reducers,
-  applyMiddleware(sagaMiddleware)
-)
-
-sagaMiddleware.run(rootSaga);
-
 
 const action = type => store.dispatch({type})
 
@@ -39,10 +13,12 @@ const addMessage = (message, author) => store.dispatch({
   author
 })
 
-const delMessage = (id) => store.dispatch({
+const delMessage = id => store.dispatch({
   type: 'DEL_MESSAGE_ACTION',
-  id
+  id: id
 })
+
+
 
 
 // exemplo generator
@@ -69,14 +45,15 @@ function render() {
   
   ReactDOM.render(
     <Counter
+      store={store}
       value={store.getState().counterState}
       messages={store.getState().messageState}
       onIncrement={() => action('INCREMENT')}
       onDecrement={() => action('DECREMENT')}
       fetchPostsAsync={() => action('FETCH_POSTS_ASYNC')}
       onIncrementAsync={() => action('INCREMENT_ASYNC')}
-      onDelMessage={() => delMessage(10)} 
       onAddMessage={() => addMessage("mensagem bla bla", "Pedro da Silva")} 
+      onDelMessage={() => delMessage() } 
       onAddBulkMessage={() => action("BULK_MESSAGE_ACTION")} 
       />,
     document.getElementById('root')

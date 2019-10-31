@@ -7,45 +7,27 @@ export function* helloSaga() {
     console.log('Hello Sagas!')
 }
 
-// Our worker Saga: will perform the async increment task
-export function* incrementAsync() {
-  yield delay(1000)
-  yield put({ type: 'INCREMENT' })
-}
-
-// Our watcher Saga: spawn a new incrementAsync task on each INCREMENT_ASYNC
-export function* watchIncrementAsync() {
-  yield takeEvery('INCREMENT_ASYNC', incrementAsync)
-}
-
-
-// Our worker Saga: will perform the async increment task
-export function* fetchAsync() {
-    
-    const URL_TO_FETCH = 'https://jsonplaceholder.typicode.com/posts';
-
-    yield fetch(URL_TO_FETCH)
-    .then(function(response){
-        response.json().then(function(data){
-            console.log(data); 
-        });
+// api
+function updateTodoAPI (id, data) {
+    return fetch(`/path/to/update/endpoint/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
     })
-    .catch(function(err){ 
-        console.error('Failed retrieving information', err);
-    });
-
-    yield put({ type: 'INCREMENT' });
-
+    .then(res => res.json())
+    .catch(err => console.log(err));
+  }
+  
+function deleteTodoAPI(params) {
     
-}
+    console.log(params.id)
 
-// Our watcher Saga: spawn a new incrementAsync task on each INCREMENT_ASYNC
-export function* watchFetchAsync() {
-    //yield takeEvery('FETCH_POSTS_ASYNC', fetchAsync)
-    yield takeLatest('FETCH_POSTS_ASYNC', fetchAsync)
-    
+    return fetch(`http://localhost:3000/messages/${params.id}`, {
+        method: 'DELETE'
+    })
+    .then(res => res.json())
+    .catch(err => console.log(err));
 }
-
+// fim api
 
 export function* fetchAsyncMessages() {
     
@@ -76,13 +58,13 @@ export function* addMessage() {
      }
 }
 
-export function* delMessage(params) {
+export function* delMessage( params ) {
 
     console.log(params)
 
     try {
-        const response = yield call(fetch, 'http://localhost:3000/messages');
-        const responseBody = yield response.json();
+        const response = yield call(deleteTodoAPI, params);
+        //const responseBody = yield response.json();
 
         yield put({ type: 'DEL_MESSAGE', id: params.id })
         
@@ -115,9 +97,8 @@ export function* watchAddMessage(params) {
 
 }
 
-export function* watchDelMessage(params) {
+export function* watchDelMessage() {
     
-
     // executa cada vez que a action for executada
     yield takeEvery('DEL_MESSAGE_ACTION', delMessage);
 
@@ -128,8 +109,6 @@ export function* watchDelMessage(params) {
 export default function* rootSaga() {
     yield all([
       helloSaga(),
-      watchIncrementAsync(),
-      watchFetchAsync(),
       watchFetchAsyncMessages(),
       watchAddMessage(),
       watchDelMessage()
