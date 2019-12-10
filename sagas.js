@@ -31,7 +31,7 @@ function deleteTodoAPI(params) {
 
 export function* fetchAsyncMessages() {
     
-    //const URL_TO_FETCH = 'https://jsonplaceholder.typicode.com/posts';
+    //123 const URL_TO_FETCH = 'https://jsonplaceholder.typicode.com/posts';
     const URL_TO_FETCH = 'http://localhost:3000/messages';
 
     try {
